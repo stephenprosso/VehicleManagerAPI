@@ -42,7 +42,15 @@ namespace VehicleManager.API.Controllers
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(new
+			{
+				customer.CustomerId,
+				customer.EmailAddress,
+				customer.Telephone,
+				customer.FirstName,
+				customer.LastName,
+
+			});
         }
 
         // PUT: api/Customers/5
@@ -58,8 +66,18 @@ namespace VehicleManager.API.Controllers
             {
                 return BadRequest();
             }
+			
+			// grab hte customers from the database
 
-            db.Entry(customer).State = EntityState.Modified;
+			var dbCustomer = db.Customers.Find(id);
+			// manually update each property
+
+			dbCustomer.EmailAddress = customer.EmailAddress;
+			dbCustomer.FirstName = customer.FirstName;
+			dbCustomer.LastName = customer.LastName;
+			dbCustomer.Telephone = customer.Telephone;
+
+			db.Entry(dbCustomer).State = EntityState.Modified;
 
             try
             {
@@ -92,7 +110,15 @@ namespace VehicleManager.API.Controllers
             db.Customers.Add(customer);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
+            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, new
+			{
+				customer.CustomerId,
+				customer.EmailAddress,
+				customer.Telephone,
+				customer.FirstName,
+				customer.LastName,
+
+			});
         }
 
         // DELETE: api/Customers/5
@@ -108,7 +134,15 @@ namespace VehicleManager.API.Controllers
             db.Customers.Remove(customer);
             db.SaveChanges();
 
-            return Ok(customer);
+            return Ok( new
+			{
+				customer.CustomerId,
+				customer.EmailAddress,
+				customer.Telephone,
+				customer.FirstName,
+				customer.LastName,
+
+			});
         }
 
         protected override void Dispose(bool disposing)

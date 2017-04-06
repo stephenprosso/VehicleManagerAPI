@@ -27,7 +27,8 @@ namespace VehicleManager.API.Controllers
 				vehicle.Color,
 				vehicle.VehicleType,
 				vehicle.Year,
-
+				vehicle.RetailPrice,
+				vehicle.VehicleId
 			});
 			return Ok(resultSet);
 		}
@@ -41,7 +42,16 @@ namespace VehicleManager.API.Controllers
                 return NotFound();
             }
 
-            return Ok(vehicle);
+            return Ok(new
+			{
+				vehicle.Make,
+				vehicle.Model,
+				vehicle.Color,
+				vehicle.VehicleType,
+				vehicle.Year,
+				vehicle.RetailPrice,
+				vehicle.VehicleId
+			});
         }
 
         // PUT: api/Vehicles/5
@@ -58,7 +68,17 @@ namespace VehicleManager.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(vehicle).State = EntityState.Modified;
+			var dbVehicle = db.Vehicles.Find(id);
+
+			dbVehicle.Color = vehicle.Color;
+			dbVehicle.Make = vehicle.Make;
+			dbVehicle.Model = vehicle.Model;
+			dbVehicle.RetailPrice = vehicle.RetailPrice;
+			dbVehicle.VehicleType = vehicle.VehicleType;
+			dbVehicle.Year = vehicle.Year;
+
+
+            db.Entry(dbVehicle).State = EntityState.Modified;
 
             try
             {
@@ -91,7 +111,16 @@ namespace VehicleManager.API.Controllers
             db.Vehicles.Add(vehicle);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = vehicle.VehicleId }, vehicle);
+            return CreatedAtRoute("DefaultApi", new { id = vehicle.VehicleId }, (new
+			{
+				vehicle.Make,
+				vehicle.Model,
+				vehicle.Color,
+				vehicle.VehicleType,
+				vehicle.Year,
+				vehicle.RetailPrice,
+				vehicle.VehicleId
+			}));
         }
 
         // DELETE: api/Vehicles/5
@@ -107,7 +136,16 @@ namespace VehicleManager.API.Controllers
             db.Vehicles.Remove(vehicle);
             db.SaveChanges();
 
-            return Ok(vehicle);
+            return Ok((new
+			{
+				vehicle.Make,
+				vehicle.Model,
+				vehicle.Color,
+				vehicle.VehicleType,
+				vehicle.Year,
+				vehicle.RetailPrice,
+				vehicle.VehicleId
+			}));
         }
 
         protected override void Dispose(bool disposing)
