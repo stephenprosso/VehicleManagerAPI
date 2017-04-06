@@ -17,14 +17,20 @@ namespace VehicleManager.API.Controllers
     {
         private VehicleManagerDataContext db = new VehicleManagerDataContext();
 
-        // GET: api/Sales
-        public IQueryable<Sale> GetSales()
-        {
-            return db.Sales;
-        }
+		// GET: api/Sales
+		public IHttpActionResult GetSales()
+		{
+			var resultSet = db.Sales.Select(sale => new
+			{
+				sale.salePrice,
+				sale.InvoiceDate,
+				sale.PaymentReceivedDate,
+			});
+			return Ok(resultSet);
+		}
 
-        // GET: api/Sales/5
-        [ResponseType(typeof(Sale))]
+		// GET: api/Sales/5
+		[ResponseType(typeof(Sale))]
         public IHttpActionResult GetSale(int id)
         {
             Sale sale = db.Sales.Find(id);

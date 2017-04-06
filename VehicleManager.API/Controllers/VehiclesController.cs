@@ -17,14 +17,22 @@ namespace VehicleManager.API.Controllers
     {
         private VehicleManagerDataContext db = new VehicleManagerDataContext();
 
-        // GET: api/Vehicles
-        public IQueryable<Vehicle> GetVehicles()
-        {
-            return db.Vehicles;
-        }
+		// GET: api/Vehicles
+		public IHttpActionResult GetVehicles()
+		{
+			var resultSet = db.Vehicles.Select(vehicle => new
+			{
+				vehicle.Make,
+				vehicle.Model,
+				vehicle.Color,
+				vehicle.VehicleType,
+				vehicle.Year,
 
-        // GET: api/Vehicles/5
-        [ResponseType(typeof(Vehicle))]
+			});
+			return Ok(resultSet);
+		}
+		// GET: api/Vehicles/5
+		[ResponseType(typeof(Vehicle))]
         public IHttpActionResult GetVehicle(int id)
         {
             Vehicle vehicle = db.Vehicles.Find(id);

@@ -17,11 +17,20 @@ namespace VehicleManager.API.Controllers
     {
         private VehicleManagerDataContext db = new VehicleManagerDataContext();
 
-        // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
-        {
-            return db.Customers;
-        }
+		// GET: api/Customers
+		public IHttpActionResult GetCustomers()
+		{
+			var resultSet = db.Customers.Select(customer => new
+			{
+				customer.CustomerId,
+				customer.EmailAddress,
+				customer.Telephone,
+				customer.FirstName,
+				customer.LastName,
+
+			});
+			return Ok(resultSet);
+		}
 
         // GET: api/Customers/5
         [ResponseType(typeof(Customer))]
