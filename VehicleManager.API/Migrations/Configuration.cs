@@ -15,6 +15,10 @@ namespace VehicleManager.API.Migrations
 
         protected override void Seed(VehicleManager.API.data.VehicleManagerDataContext context)
         {
+			int numberOfVehicles = 25;
+			int numberOfSales = 25;
+			int numberOfCustomers = 25;
+
 			string[] colors = new string[] {"Green", "White", "Blue", "Red", "Black", "Yellow"};
 			string[] makes = new string[] { "Toyota", "Honda", "Chevy", "Ford" };
 			string[] models = new string[] { "Carolla", "Prius", "Civic", "Silverado", "F150" };
@@ -23,7 +27,7 @@ namespace VehicleManager.API.Migrations
 			if (context.Customers.Count() == 0)
 			{
 				//  This method will be called after migrating to the latest version.
-				for (int i = 0; i < 25; i++)
+				for (int i = 0; i < numberOfCustomers; i++)
 				{
 					context.Customers.Add(new Models.Customer
 					{
@@ -40,7 +44,7 @@ namespace VehicleManager.API.Migrations
 
 			if (context.Vehicles.Count() == 0)
 			{
-				for (int i = 0; i < 25; i++)
+				for (int i = 0; i < numberOfVehicles; i++)
 				{
 					context.Vehicles.Add(new Vehicle
 					{
@@ -57,14 +61,14 @@ namespace VehicleManager.API.Migrations
 
 			if (context.Sales.Count() == 0)
 			{
-				for (int i = 0; i < 25; i++)
+				for (int i = 0; i < numberOfSales; i++)
 				{
-					var vehicle = context.Vehicles.Find(Faker.NumberFaker.Number(1, 100));
+					var vehicle = context.Vehicles.Find(Faker.NumberFaker.Number(1, numberOfVehicles));
 					var invoiceDate = Faker.DateTimeFaker.DateTime();
 
 					context.Sales.Add(new Sale
 					{
-						Customer = context.Customers.Find(Faker.NumberFaker.Number(1, 100)),
+						Customer = context.Customers.Find(Faker.NumberFaker.Number(1, numberOfCustomers)),
 						Vehicle = vehicle,
 						InvoiceDate = invoiceDate,
 						salePrice = vehicle.RetailPrice,

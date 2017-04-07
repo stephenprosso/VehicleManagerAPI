@@ -107,6 +107,8 @@ namespace VehicleManager.API.Controllers
                 return BadRequest(ModelState);
             }
 
+			//customer.DateOfBirth = DateTime.Now;
+
             db.Customers.Add(customer);
             db.SaveChanges();
 
