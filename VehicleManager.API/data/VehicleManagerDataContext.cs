@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using VehicleManager.API.Migrations;
 using VehicleManager.API.Models;
 
 namespace VehicleManager.API.data
@@ -10,7 +11,12 @@ namespace VehicleManager.API.data
 	public class VehicleManagerDataContext : DbContext
 	{
 		// constructor
-		public VehicleManagerDataContext() : base("VehicleManager") { }
+		public VehicleManagerDataContext() : base("VehicleManager")
+		{
+			Database.SetInitializer(
+new MigrateDatabaseToLatestVersion<VehicleManagerDataContext, Configuration>()
+);
+		}
 
 		// DbSets
 		public IDbSet<Customer> Customers { get; set; }
